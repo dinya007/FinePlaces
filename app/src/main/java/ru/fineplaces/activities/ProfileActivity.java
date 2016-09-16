@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import ru.fineplaces.R;
-import ru.fineplaces.utils.ViewUtils;
 
 public class ProfileActivity extends AppCompatActivity {
 
