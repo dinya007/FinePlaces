@@ -83,9 +83,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         App.getComponent().inject(this);
 
-        Toast.makeText(this, authenticationService.register(null, null, null), Toast.LENGTH_SHORT).show();
-
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -176,7 +173,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }else if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -202,7 +203,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             ViewUtils.showProgress(true, this);
             mAuthTask = new UserLoginTask(email, password, this);
-            mAuthTask.execute((Void) null);
+            mAuthTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+//            mAuthTask.execute((Void) null);
             Toast.makeText(this, "Authenticating...", Toast.LENGTH_SHORT).show();
 
 
@@ -327,24 +329,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return false;
+            return authenticationService.login(mEmail, mPassword);
         }
 
         @Override
@@ -353,12 +338,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             ViewUtils.showProgress(false, loginActivity);
 
             if (success) {
-//                finish();
                 Intent intent = new Intent(loginActivity, ProfileActivity.class);
                 startActivity(intent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                Toast.makeText(loginActivity, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+//                mPasswordView.setError();
+//                mPasswordView.requestFocus();
             }
         }
 
