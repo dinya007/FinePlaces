@@ -53,13 +53,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
@@ -177,7 +170,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
-        }else if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        } else if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -205,7 +198,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = new UserLoginTask(email, password, this);
             mAuthTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
 //            mAuthTask.execute((Void) null);
-            Toast.makeText(this, "Authenticating...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.authentication_wait), Toast.LENGTH_SHORT).show();
 
 
         }
@@ -218,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 6;
     }
 
     /**
@@ -311,11 +304,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    private class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
@@ -338,12 +327,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             ViewUtils.showProgress(false, loginActivity);
 
             if (success) {
-                Intent intent = new Intent(loginActivity, ProfileActivity.class);
+                Intent intent = new Intent(loginActivity, PlaceListActivity.class);
                 startActivity(intent);
             } else {
                 Toast.makeText(loginActivity, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
-//                mPasswordView.setError();
-//                mPasswordView.requestFocus();
             }
         }
 

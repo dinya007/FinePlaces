@@ -2,16 +2,20 @@
     <string name="app_name">FinePlaces</string>
 
     <!-- Strings related to name -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This email or password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="prompt_email">Почта</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="error_invalid_email">Неверный адресс почты</string>
+    <string name="error_invalid_password">Пароль должен состоять из не менее 6 символов</string>
+    <string name="error_incorrect_password">Пароль или почта указаны неверно</string>
+    <string name="error_field_required">Обязательное поле</string>
+    <string name="authentication_wait">Пожалуйста, подождите …</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_profile">Профиль</string>
+    <string name="title_activity_place_list">Список ваших ресторанов</string>
+    <string name="toast_welcome">Добро пожаловать!</string>
+    <string name="toast_now_yet_owner">Добро пожаловать!</string>
 </resources>

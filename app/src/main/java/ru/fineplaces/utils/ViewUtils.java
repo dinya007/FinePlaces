@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.view.View;
+import android.widget.Toast;
 
 import ru.fineplaces.R;
 
@@ -36,6 +37,11 @@ public class ViewUtils {
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
+    }
+
+    public static void makeToastText(Activity activity, String text) {
+        Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+
     }
 
 }

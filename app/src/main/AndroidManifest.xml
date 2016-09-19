@@ -25,8 +25,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.ProfileActivity"
-            android:label="@string/title_activity_profile"
+            android:name=".activities.PlaceListActivity"
+            android:label="@string/title_activity_place_list"
             android:theme="@style/AppTheme"></activity>
     </application>
 
