@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
 
@@ -42,6 +43,11 @@ public class ViewUtils {
     public static void makeToastText(Activity activity, String text) {
         Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
 
+    }
+
+    public static void makeSnackbarText(View view, String text) {
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
 }

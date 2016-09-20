@@ -25,4 +25,14 @@ public class PlaceServiceImpl implements PlaceService {
         }
         return null;
     }
+
+    @Override
+    public PlaceDto save(PlaceDto placeDto) {
+        try {
+            return placeDao.save(placeDto).execute().body();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

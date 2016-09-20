@@ -20,6 +20,7 @@ public class DaModule {
 
     //    String BASE_URL = "http://192.168.0.102:8080";
     String BASE_URL = "http://10.38.134.107:8080";
+//    String BASE_URL = "http://10.5.33.182:8080";
 
     @Provides
     @Singleton

@@ -1,14 +1,14 @@
 package ru.fineplaces.domain;
 
-public class Coordinate {
+public class Coordinates {
 
     private double latitude;
     private double longitude;
 
-    public Coordinate() {
+    public Coordinates() {
     }
 
-    public Coordinate(double latitude, double longitude) {
+    public Coordinates(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -34,7 +34,7 @@ public class Coordinate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Coordinate that = (Coordinate) o;
+        Coordinates that = (Coordinates) o;
 
         if (Double.compare(that.latitude, latitude) != 0) return false;
         return Double.compare(that.longitude, longitude) == 0;
@@ -50,5 +50,13 @@ public class Coordinate {
         temp = Double.doubleToLongBits(longitude);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

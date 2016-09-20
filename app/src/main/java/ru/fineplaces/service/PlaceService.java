@@ -8,4 +8,6 @@ public interface PlaceService {
 
     List<PlaceDto> getAll();
 
+    PlaceDto save(PlaceDto placeDto);
+
 }

@@ -1,32 +1,38 @@
 package ru.fineplaces.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
 import ru.fineplaces.App;
 import ru.fineplaces.R;
+import ru.fineplaces.domain.Coordinates;
 import ru.fineplaces.domain.PlaceDto;
+import ru.fineplaces.domain.PlaceKey;
+import ru.fineplaces.enums.IntentExtras;
 import ru.fineplaces.service.PlaceService;
+import ru.fineplaces.state.PlaceMap;
 import ru.fineplaces.utils.ViewUtils;
 
 public class PlaceListActivity extends AppCompatActivity {
 
-    String[] mobileArray = {"Android", "IPhone", "WindowsMobile", "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X"};
+    @Inject
+    PlaceMap placeMap;
 
     @Inject
     PlaceService placeService;
@@ -49,8 +55,7 @@ public class PlaceListActivity extends AppCompatActivity {
         addPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                ViewUtils.makeSnackbarText(view, "Replace with your own action");
             }
         });
 
@@ -58,11 +63,22 @@ public class PlaceListActivity extends AppCompatActivity {
         listItems = new ArrayList<>();
         listItems.add("");
         listItems.add("");
+        placeMap.put(new PlaceKey(new Coordinates(Double.MIN_VALUE, Double.MIN_VALUE), 0), null);
+        placeMap.put(new PlaceKey(new Coordinates(Double.MIN_VALUE + 1, Double.MIN_VALUE + 1), 1), null);
+
         adapter = new ArrayAdapter<>(this, R.layout.activity_place_list_item, listItems);
         ListView listView = (ListView) findViewById(R.id.place_list);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new PlaceClickListener(this));
+
         PlaceListLoader placeListLoader = new PlaceListLoader(placeService, this);
         placeListLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     private class PlaceListLoader extends AsyncTask<Void, Void, List<PlaceDto>> {
@@ -83,15 +99,33 @@ public class PlaceListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<PlaceDto> placeDtoList) {
             if (placeDtoList != null && !placeDtoList.isEmpty()) {
-                String[] placeNames = new String[placeDtoList.size()];
                 ArrayList<String> placeNamesList = new ArrayList<>();
                 for (int i = 0; i < placeDtoList.size(); i++) {
-                    placeNames[i] = placeDtoList.get(i).getLocationName();
-                    placeNamesList.add(placeDtoList.get(i).getLocationName());
+                    PlaceDto placeDto = placeDtoList.get(i);
+                    placeNamesList.add(placeDto.getLocationName());
+                    placeMap.put(new PlaceKey(placeDto.getCoordinates(), i + 2), placeDto);
                 }
-                adapter.addAll(placeNames);
+                adapter.addAll(placeNamesList);
+
             }
             ViewUtils.makeToastText(activity, getString(R.string.toast_now_yet_owner));
+        }
+    }
+
+
+    private class PlaceClickListener implements AdapterView.OnItemClickListener {
+
+        private final PlaceListActivity activity;
+
+        private PlaceClickListener(PlaceListActivity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(activity, DetailProfileActivity.class);
+            intent.putExtra(IntentExtras.PLACE_COORDINATES.name(), new Gson().toJson(placeMap.getByPosition(position).getCoordinates()));
+            startActivity(intent);
         }
     }
 
