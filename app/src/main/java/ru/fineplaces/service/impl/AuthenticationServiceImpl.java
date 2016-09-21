@@ -2,6 +2,7 @@ package ru.fineplaces.service.impl;
 
 import java.io.IOException;
 
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import ru.fineplaces.da.AuthenticationDao;
 import ru.fineplaces.domain.RegisterDto;
@@ -39,11 +40,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public boolean logout() {
         try {
-            return isReturnCode200(authenticationDao.logout().execute());
+            Response<ResponseBody> execute = authenticationDao.logout().execute();
+            boolean returnCode302 = isReturnCode302(execute);
+            System.out.println(returnCode302);
+            return returnCode302;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private boolean isReturnCode302(Response<?> response) {
+        return response.code() == 302;
     }
 
     private boolean isReturnCode200(Response<?> response) {

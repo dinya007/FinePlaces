@@ -1,6 +1,8 @@
 package ru.fineplaces.da;
 
 
+import java.util.Objects;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -11,7 +13,7 @@ import ru.fineplaces.domain.RegisterDto;
 public interface AuthenticationDao {
 
     @POST("/authentication/register")
-    Call<ResponseBody> register(RegisterDto registerDto);
+    Call<ResponseBody> register(@Body RegisterDto registerDto);
 
     @POST("/authentication/login")
     Call<ResponseBody> login(@Query("username") String username, @Query("password") String password, @Body String body);

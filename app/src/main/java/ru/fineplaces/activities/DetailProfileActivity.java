@@ -148,14 +148,4 @@ public class DetailProfileActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            // do something on back.
-            return super.onKeyDown(keyCode, event);
-
-        }
-        return super.onKeyDown(keyCode, event);
-
-    }
 }

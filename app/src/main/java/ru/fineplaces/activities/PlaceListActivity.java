@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,9 +26,15 @@ import ru.fineplaces.domain.Coordinates;
 import ru.fineplaces.domain.PlaceDto;
 import ru.fineplaces.domain.PlaceKey;
 import ru.fineplaces.enums.IntentExtras;
+import ru.fineplaces.service.AuthenticationService;
 import ru.fineplaces.service.PlaceService;
 import ru.fineplaces.state.PlaceMap;
 import ru.fineplaces.utils.ViewUtils;
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
+import rx.observers.Subscribers;
+import rx.schedulers.Schedulers;
 
 public class PlaceListActivity extends AppCompatActivity {
 
@@ -36,6 +43,9 @@ public class PlaceListActivity extends AppCompatActivity {
 
     @Inject
     PlaceService placeService;
+    @Inject
+    AuthenticationService authenticationService;
+
     ArrayAdapter<String> adapter;
     List<String> listItems;
 
@@ -129,5 +139,20 @@ public class PlaceListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            Observable.create(new Observable.OnSubscribe<Void>() {
+                @Override
+                public void call(Subscriber<? super Void> subscriber) {
+                    authenticationService.logout();
+                }
+            }).subscribeOn(Schedulers.io()).subscribe();
+            return super.onKeyDown(keyCode, event);
+
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
 
 }

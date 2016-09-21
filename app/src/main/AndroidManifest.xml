@@ -32,6 +32,10 @@
             android:name=".activities.DetailProfileActivity"
             android:label="@string/title_activity_detail_profile"
             android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:label="@string/title_register"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
