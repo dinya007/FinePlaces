@@ -10,8 +10,7 @@
     <ListView
         android:id="@+id/place_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="wrap_content"></ListView>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

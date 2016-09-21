@@ -12,8 +12,11 @@ import ru.fineplaces.activities.RegisterActivity;
 @Singleton
 public interface ApplicationComponent {
     void inject(LoginActivity activity);
+
     void inject(PlaceListActivity activity);
+
     void inject(DetailProfileActivity activity);
+
     void inject(RegisterActivity activity);
 
 }
